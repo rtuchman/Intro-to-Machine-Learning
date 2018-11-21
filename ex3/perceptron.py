@@ -4,7 +4,7 @@
 
 # Please import and use stuff only from the packages numpy, sklearn, matplotlib
 
-import sgd
+from sgd import *
 import numpy as np
 import matplotlib.pyplot as plt
 import sklearn
@@ -97,15 +97,12 @@ def q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled):
 
 
 
-def sign(x):
-    return (1, -1)[x < 0]
-
 if __name__ == "__main__":
-    train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = sgd.helper()
-    q_1a(train_data, train_labels, test_data, test_labels)
-    q_1b(train_data, train_labels)
+    train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = helper()
+    #q_1a(train_data, train_labels, test_data, test_labels)
+    #q_1b(train_data, train_labels)
     q_1c(train_data, train_labels, test_data, test_labels)
-    q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled)
+    #q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled)
 
 
 
