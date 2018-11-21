@@ -95,12 +95,30 @@ def q_2b(data, labels, validation_data, validation_labels, T):
     return
 
 
-def q_2c():
-    best_C = 10**(-4)
+def q_2c(train_data, train_labels, T):
+    best_C = 10**-4
+    best_eta_0 = 1
+    w = SGD(train_data, train_labels, best_C, best_eta_0, T)
+    plt.imshow(np.reshape(w, (28, 28)), interpolation='nearest')
+    plt.title('Best classifier as an 28 x 28 image')
+    plt.savefig('Q_2c.png')
+    plt.close()
 
 
-def q_2d():
-    pass
+
+
+def q_2d(train_data, train_labels, test_data, test_labels, T):
+    best_C = 10**-4
+    best_eta_0 = 1
+    w = SGD(train_data, train_labels, best_C, best_eta_0, T)
+    accuracy = 0
+    for j in range(len(test_data)):
+        accuracy += (sign(np.dot(w, test_data[j])) == test_labels[j]) / len(test_data)
+
+    print("\nThe accuracy of the best classifier on the test set is:{} %\n".format(accuracy.__round__(5)))
+
+    return
+
 
 
 def sign(x):
@@ -129,8 +147,10 @@ def average_accuracy(data, labels, validation_data, validation_labels, C, eta_0,
 
 if __name__ == "__main__":
     train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = helper()
-    #q_2a(train_data, train_labels, validation_data, validation_labels, 1000)
+    q_2a(train_data, train_labels, validation_data, validation_labels, 1000)
     q_2b(train_data, train_labels, validation_data, validation_labels, 1000)
+    q_2c(train_data, train_labels, 20000)
+    q_2d(train_data, train_labels, test_data, test_labels, 20000)
 
 
 
