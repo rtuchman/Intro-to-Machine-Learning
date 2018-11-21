@@ -96,7 +96,7 @@ def q_2b(data, labels, validation_data, validation_labels, T):
 
 
 def q_2c():
-    C =
+    pass
 
 
 def q_2d():
@@ -129,7 +129,7 @@ def average_accuracy(data, labels, validation_data, validation_labels, C, eta_0,
 
 if __name__ == "__main__":
     train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = helper()
-    q_2a(train_data, train_labels, validation_data, validation_labels, 1000)
+    #q_2a(train_data, train_labels, validation_data, validation_labels, 1000)
     q_2b(train_data, train_labels, validation_data, validation_labels, 1000)
 
 
