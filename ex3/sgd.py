@@ -61,9 +61,9 @@ def SGD(data, labels, C, eta_0, T):
 
 def q_2a(data, labels, validation_data, validation_labels, T):
     C = 1
-    average_accuracy_list = [0 for _ in range(11)]
-    eta_0_list = [10e-6*(10**i) for i in range(11)]
-    for k in range(11):
+    average_accuracy_list = [0 for _ in range(10)]
+    eta_0_list = [10**-5*(10**i) for i in range(10)]
+    for k in range(10):
         average_accuracy_list[k] = average_accuracy(data, labels, validation_data, validation_labels, C, eta_0_list[k], T)
 
     log_10_eta_0 = [np.log10(x) for x in eta_0_list]
@@ -79,9 +79,9 @@ def q_2a(data, labels, validation_data, validation_labels, T):
 
 def q_2b(data, labels, validation_data, validation_labels, T):
     eta_0 = 1
-    average_accuracy_list = [0 for _ in range(11)]
-    c_list = [10e-6*(10**i) for i in range(11)]
-    for k in range(11):
+    average_accuracy_list = [0 for _ in range(10)]
+    c_list = [10**-5*(10**i) for i in range(10)]
+    for k in range(10):
         average_accuracy_list[k] = average_accuracy(data, labels, validation_data, validation_labels, c_list[k], eta_0, T)
 
     log_10_c = [np.log10(x) for x in c_list]
@@ -96,7 +96,7 @@ def q_2b(data, labels, validation_data, validation_labels, T):
 
 
 def q_2c():
-    pass
+    best_C = 10**(-4)
 
 
 def q_2d():
