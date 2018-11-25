@@ -8,8 +8,8 @@ from sgd import *
 import numpy as np
 import matplotlib.pyplot as plt
 import sklearn
-plt.ioff()
 import warnings
+plt.ioff()
 warnings.filterwarnings("ignore")  # ignore DeprecationWarning: Function mldata_filename is deprecated
 
 
@@ -91,7 +91,7 @@ def q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled):
         if y_tilda != test_labels[j]:
             image_num += 1
             plt.imshow(np.reshape(test_data_unscaled[j], (28, 28)), interpolation='nearest')
-            plt.savefig(("Q_1b_{}.png".format(image_num)))
+            plt.savefig(("Q_1d_{}.png".format(image_num)))
         if image_num == 2:
             plt.close()
             return
@@ -100,8 +100,8 @@ def q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled):
 
 if __name__ == "__main__":
     train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = helper()
-    q_1a(train_data, train_labels, test_data, test_labels)
-    q_1b(train_data, train_labels)
+    #q_1a(train_data, train_labels, test_data, test_labels)
+    #q_1b(train_data, train_labels)
     q_1c(train_data, train_labels, test_data, test_labels)
     q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled)
 

@@ -115,7 +115,7 @@ def q_2d(train_data, train_labels, test_data, test_labels, T):
     for j in range(len(test_data)):
         accuracy += (sign(np.dot(w, test_data[j])) == test_labels[j]) / len(test_data)
 
-    print("\nThe accuracy of the best classifier on the test set is:{} %\n".format(accuracy.__round__(5)))
+    print("\nThe accuracy of the best classifier on the test set is: {} %\n".format(accuracy.__round__(5)))
 
     return
 
@@ -147,8 +147,8 @@ def average_accuracy(data, labels, validation_data, validation_labels, C, eta_0,
 
 if __name__ == "__main__":
     train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = helper()
-    q_2a(train_data, train_labels, validation_data, validation_labels, 1000)
-    q_2b(train_data, train_labels, validation_data, validation_labels, 1000)
+    #q_2a(train_data, train_labels, validation_data, validation_labels, 1000)
+    #q_2b(train_data, train_labels, validation_data, validation_labels, 1000)
     q_2c(train_data, train_labels, 20000)
     q_2d(train_data, train_labels, test_data, test_labels, 20000)
 
