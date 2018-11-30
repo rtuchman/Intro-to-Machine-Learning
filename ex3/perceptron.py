@@ -100,8 +100,8 @@ def q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled):
 
 if __name__ == "__main__":
     train_data, train_labels, validation_data, validation_labels, test_data, test_labels, test_data_unscaled = helper()
-    #q_1a(train_data, train_labels, test_data, test_labels)
-    #q_1b(train_data, train_labels)
+    q_1a(train_data, train_labels, test_data, test_labels)
+    q_1b(train_data, train_labels)
     q_1c(train_data, train_labels, test_data, test_labels)
     q_1d(train_data, train_labels, test_data, test_labels, test_data_unscaled)
 
