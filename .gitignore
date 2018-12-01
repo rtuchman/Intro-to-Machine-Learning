@@ -6,6 +6,7 @@ __pycache__/
 #Zip files
 *.zip
 *.rar
+*.gz
 
 # C extensions
 *.so

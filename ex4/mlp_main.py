@@ -1,5 +1,4 @@
 from keras_mnist import KerasMnist
-
 from matplotlib import pyplot as plt
 import argparse
 
