@@ -10,6 +10,8 @@ from keras.layers import Dense, Activation, Input
 from keras.optimizers import SGD
 
 from matplotlib import pyplot as plt
+plt.ioff()
+
 
 
 class KerasMnist(object):

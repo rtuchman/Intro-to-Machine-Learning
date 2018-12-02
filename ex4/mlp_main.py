@@ -1,6 +1,8 @@
 from keras_mnist import KerasMnist
 from matplotlib import pyplot as plt
 import argparse
+plt.ioff()
+
 
 
 def train_eval_single(hidden_layers, skips, epochs, batch_size, output_curve=None):

@@ -1,10 +1,11 @@
 #################################
-# Your name:
+# Your name: Ran Tuchman
 #################################
 
 # Please import and use stuff only from the packages numpy, sklearn, matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
+plt.ioff()
 from sklearn import svm
 from sklearn.datasets import make_blobs
 
@@ -12,7 +13,7 @@ from sklearn.datasets import make_blobs
 Q4.1 skeleton.
 
 Please use the provided functions signature for the SVM implementation.
-Feel free to add functions and other code, and submit this file with the name svm.py
+Feel free to add functions and other code, and submit this file with the name skeleton_svm.py
 """
 
 # generate points in 2D
@@ -51,6 +52,26 @@ def train_three_kernels(X_train, y_train, X_val, y_val):
                 A two dimensional array of size 3 that contains the number of support vectors for each class(2) in the three kernels.
     """
     # TODO: add your code here
+    linear_clf = svm.SVC(C=1000.0, kernel='linear')
+    quadratic_clf = svm.SVC(C=1000.0, kernel='poly', degree=2)
+    rbf_clf = svm.SVC(C=1000.0, kernel='rbf')
+    linear_clf.fit(X_train, y_train)
+    quadratic_clf.fit(X_train, y_train)
+    rbf_clf.fit(X_train, y_train)
+
+    create_plot(X_val, y_val, linear_clf)
+    plt.imsave('SVM_linear')
+    plt.close()
+
+    create_plot(X_val, y_val, quadratic_clf)
+    plt.imsave('SVM_quadratic')
+    plt.close()
+
+    create_plot(X_val, y_val, rbf_clf)
+    plt.imsave('SVM_rbf')
+    plt.close()
+
+    return np.vstack((linear_clf.n_support_, quadratic_clf.n_support_, rbf_clf.n_support_))
 
 
 def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
@@ -58,7 +79,24 @@ def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
         Returns: np.ndarray of shape (11,) :
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
-    # TODO: add your code here
+    clf_list = []
+    C_list = [10**x for x in range(-5, 6)]
+    for c in C_list:
+        linear_clf = svm.SVC(C=c, kernel='linear')
+        linear_clf.fit(X_train, y_train)
+        clf_list.append(linear_clf)
+    accuracy_list = np.zeros(len(clf_list))
+    for j in range(len(clf_list)):
+        accuracy_list[j] = sum(clf_list[j].predict(X_val) == y_val) / float(len(X_val))
+
+    plt.title('Accuracy as function of C')
+    plt.plot(np.log10(C_list), accuracy_list)
+    plt.grid()
+    plt.xlabel('penalty constant')
+    plt.ylabel('Accuracy')
+    plt.savefig('Q_1b.png')
+    plt.close()
+    return
 
 
 def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
@@ -66,4 +104,20 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
         Returns: np.ndarray of shape (11,) :
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
-    # TODO: add your code here
+    clf_list = []
+    gamma_list = [10**x for x in range(-5, 6)]
+    for g in gamma_list:
+        rbf_clf = svm.SVC(C=10, kernel='rbf', gamma=g)
+        rbf_clf.fit(X_train, y_train)
+        clf_list.append(rbf_clf)
+    accuracy_list = np.zeros(len(clf_list))
+    for j in range(len(clf_list)):
+        accuracy_list[j] = sum(clf_list[j].predict(X_val) == y_val) / float(len(X_val))
+
+    plt.title('Accuracy as function of C')
+    plt.plot(np.log10(gamma_list), accuracy_list)
+    plt.grid()
+    plt.xlabel('gamma')
+    plt.ylabel('Accuracy')
+    plt.savefig('Q_1c.png')
+    plt.close()
