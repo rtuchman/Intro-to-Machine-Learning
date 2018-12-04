@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 plt.ioff()
 from sklearn import svm
 from sklearn.datasets import make_blobs
+import warnings
+warnings.filterwarnings("ignore")  # ignore Warnings: living on the edge
+
 
 """
 Q4.1 skeleton.
@@ -51,7 +54,6 @@ def train_three_kernels(X_train, y_train, X_val, y_val):
     Returns: np.ndarray of shape (3,2) :
                 A two dimensional array of size 3 that contains the number of support vectors for each class(2) in the three kernels.
     """
-    # TODO: add your code here
     linear_clf = svm.SVC(C=1000.0, kernel='linear')
     quadratic_clf = svm.SVC(C=1000.0, kernel='poly', degree=2)
     rbf_clf = svm.SVC(C=1000.0, kernel='rbf')
@@ -59,17 +61,13 @@ def train_three_kernels(X_train, y_train, X_val, y_val):
     quadratic_clf.fit(X_train, y_train)
     rbf_clf.fit(X_train, y_train)
 
-    create_plot(X_val, y_val, linear_clf)
-    plt.imsave('SVM_linear')
-    plt.close()
-
-    create_plot(X_val, y_val, quadratic_clf)
-    plt.imsave('SVM_quadratic')
-    plt.close()
-
-    create_plot(X_val, y_val, rbf_clf)
-    plt.imsave('SVM_rbf')
-    plt.close()
+    ##only for saving decision boundaries
+    #clf_list = (linear_clf, quadratic_clf, rbf_clf)
+    #for clf in clf_list:
+    #    create_plot(X_train, y_train, clf)
+    #    plt.title('Decision boundaries for {} kernel'.format(clf.kernel))
+    #    plt.savefig(r"C:\Users\rtuchman\PycharmProjects\Intro-to-Machine-Learning\ex4\Decision boundaries for differnt kernels\Q_1a_{}.png".format(clf.kernel))
+    #    plt.close()
 
     return np.vstack((linear_clf.n_support_, quadratic_clf.n_support_, rbf_clf.n_support_))
 
@@ -92,11 +90,18 @@ def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
     plt.title('Accuracy as function of C')
     plt.plot(np.log10(C_list), accuracy_list)
     plt.grid()
-    plt.xlabel('penalty constant')
+    plt.xlabel('Log10(penalty constant)')
     plt.ylabel('Accuracy')
     plt.savefig('Q_1b.png')
     plt.close()
-    return
+
+    ##only for saving decision boundaries#
+    #for clf in clf_list:
+    #    create_plot(X_train, y_train, clf)
+    #    plt.title("Decision boundaries for C={}".format(clf.C))
+    #    plt.savefig(r"C:\Users\rtuchman\PycharmProjects\Intro-to-Machine-Learning\ex4\Decision boundaries for C\Q_1b_C={}.png".format(clf.C))
+    #plt.close()
+    #return accuracy_list
 
 
 def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
@@ -114,10 +119,25 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
     for j in range(len(clf_list)):
         accuracy_list[j] = sum(clf_list[j].predict(X_val) == y_val) / float(len(X_val))
 
-    plt.title('Accuracy as function of C')
+    plt.title('Accuracy as function of gamma')
     plt.plot(np.log10(gamma_list), accuracy_list)
     plt.grid()
-    plt.xlabel('gamma')
-    plt.ylabel('Accuracy')
+    plt.xlabel('Log10(gamma)')
+    plt.ylabel('Accuracy')#
     plt.savefig('Q_1c.png')
     plt.close()
+
+    ##only for saving decision boundaries
+    #for clf in clf_list:
+    #    create_plot(X_train, y_train, clf)
+    #    plt.title('Decision boundaries for gamma={}'.format(clf.gamma))
+    #    plt.savefig(r"C:\Users\rtuchman\PycharmProjects\Intro-to-Machine-Learning\ex4\Decision boundaries for gamma\Q_1c_gamma={}.png".format(clf.gamma))
+    #plt.close()
+    #return accuracy_list
+
+
+if __name__ == "__main__":
+    X_train, y_train, X_val, y_val = get_points()
+    train_three_kernels(X_train, y_train, X_val, y_val)
+    linear_accuracy_per_C(X_train, y_train, X_val, y_val)
+    rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val)
