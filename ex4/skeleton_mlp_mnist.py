@@ -64,7 +64,6 @@ class KerasMnist(object):
         for i in range(1, len(self.hidden_layer_dims)):
             self.model.add(Dense(self.hidden_layer_dims[i], activation='relu'))
         self.model.add(Dense(self.num_classes, activation='softmax'))
-
         self.model.compile(optimizer=SGD(),
                            loss='categorical_crossentropy',
                            metrics=['accuracy'])
