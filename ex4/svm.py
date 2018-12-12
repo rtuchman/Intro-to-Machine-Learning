@@ -16,7 +16,7 @@ warnings.filterwarnings("ignore")  # ignore Warnings: living on the edge
 Q4.1 skeleton.
 
 Please use the provided functions signature for the SVM implementation.
-Feel free to add functions and other code, and submit this file with the name skeleton_svm.py
+Feel free to add functions and other code, and submit this file with the name svm.py
 """
 
 # generate points in 2D

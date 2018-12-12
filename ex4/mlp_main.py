@@ -1,4 +1,4 @@
-from skeleton_mlp_mnist import KerasMnist
+from mlp_mnist import KerasMnist
 from matplotlib import pyplot as plt
 import argparse
 plt.ioff()
