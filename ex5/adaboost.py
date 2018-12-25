@@ -42,7 +42,6 @@ def run_adaboost(X_train, y_train, T):
         h_s.append(h_neg)
         alphas.append(alpha)
 
-        # Update distribution.
         distribution = np.array([np.exp(np.negative(alpha * (np.sign(h_neg[2] - X_train[i][h_neg[1]]) * h_neg[0]) * y_train[i])) for i in range(n)])
         z_t = np.dot(D, distribution)
         new_distribution = distribution * (1.0 / z_t)
@@ -71,7 +70,6 @@ def WL(train_data, train_labels, D, prediction):
             theta = dim_sort[0][0][k] - 1
             dim_idx = k
 
-        # Iterate through sorted points.
         for j in range(n):
             curr_error = curr_error - (prediction * (dim_sort[j][1] * dim_sort[j][2]))
 
@@ -109,13 +107,13 @@ def main():
     if not data:
         return
     (X_train, y_train, X_test, y_test, vocab) = data
-    T=10
+    T=80
     hypotheses, alphas = run_adaboost(X_train, y_train, T)
     train_errors = []
     test_errors = []
     for t in range(T):
         curr_boosted_h = lambda x: np.sign(
-            np.sum([(np.sign(hypotheses[i][2] - x[hypotheses[i][1]]) * alphas[i]) for i in range(t+1)]))
+            np.sum([((np.sign(hypotheses[j][2] - x[hypotheses[j][1]]) * hypotheses[j][0]) * alphas[j]) for j in range(t + 1)]))
         train_errors.append(calc_error(X_train, y_train, curr_boosted_h))
         test_errors.append(calc_error(X_test, y_test, curr_boosted_h))
 
@@ -126,6 +124,7 @@ def main():
     plt.xlabel('t')
     plt.ylabel('error')
     plt.savefig('q_1a.png')
+    plt.close()
 
     train_loss = []
     test_loss = []
@@ -140,16 +139,7 @@ def main():
     plt.xlabel('t')
     plt.ylabel('loss')
     plt.savefig('q_1c.png')
-
-
-
-
-
-
-
-
-
-
+    plt.close()
 
 
 if __name__ == '__main__':
