@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_lfw_people
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn import svm
 import numpy as np
 plt.ioff()  # Turn interactive plotting off
 import random
+
 
 
 def plot_vector_as_image(image, h, w, title='img'):
@@ -109,18 +112,37 @@ def qa_iii():
 
 def q3_iv():
     names = load_data()['target_names']
-    images = []
+    first = True
     for n in names:
         ims, h, w = get_pictures_by_name(n)
+        reshaped_images = [x.reshape(1, h * w)[0, :] for x in ims]
+        reshaped_images = np.array(reshaped_images)
+
         if len(ims[0]) >= 70:
-            images.append(ims)
+            if first:
+                X = reshaped_images
+                y = np.array([n]*len(ims))
+                first = False
+            else:
+                X = np.concatenate((X, reshaped_images))
+                tmp_y = np.array([n]*len(ims))
+                y = np.concatenate((y, tmp_y))
+
+
+
+    parameters = {'kernel': ['rbf'], 'C': [10, 100, 1000, 10000], 'gamma': [1e-7, 1e-8, 1e-9, 1e-10]}
     k_list = [1, 5, 10, 30, 50, 100, 150, 300]
+    for k in k_list:
+        U, S = PCA(X, k)
+        encoded_list = np.array([encode(U, x) for x in X])
+        X_train, X_test, y_train, y_test = train_test_split(encoded_list, y, test_size=0.25, random_state=22)
+        svc = svm.SVC()
+        clf = GridSearchCV(svc, parameters, scoring='accuracy',)
+        clf.fit(X_train, y_train)
+        accuracy = sum(clf.predict(X_test) == y_test)/ len(X_test)
 
 
-
-
-
-
+        print('dudu')
 
 def encode(U, x):
     return np.matmul(U, np.transpose(x))
@@ -150,7 +172,7 @@ def plot_all_vectors(images, h, w, title='img'):
 
 
 if __name__ == "__main__":
-    #qa_iii()
+    #qa_ii()
     q3_iv()
     #a = load_data()
     #data = a['images'][:10]
