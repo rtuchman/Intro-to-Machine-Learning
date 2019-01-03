@@ -2,25 +2,20 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_lfw_people
 import numpy as np
 plt.ioff()  # Turn interactive plotting off
-from numpy.linalg import svd
+import random
 
-def plot_vector_as_image(images, h, w, title='img'):
-    """
-    utility function to plot a vector as image.
-    Args:
-    image - vector of pixels
-    h, w - dimesnions of original pi
-    """
-    fig, ax = plt.subplots(2, 5)
 
-    i = 0
-    for row in ax:
-        for col in row:
-            col.axis('off')
-            col.imshow(images[i, :].reshape((h, w)), cmap=plt.cm.gray)
-            i += 1
+def plot_vector_as_image(image, h, w, title='img'):
+	"""
+	utility function to plot a vector as image.
+	Args:
+	image - vector of pixels
+	h, w - dimesnions of original pi
+	"""
+	plt.imshow(image.reshape((h, w)), cmap=plt.cm.gray)
+	plt.title(title, size=12)
+	plt.show()
 
-    plt.savefig(title)
 
 def get_pictures_by_name(name='Ariel Sharon'):
     """
@@ -75,13 +70,88 @@ def qa_ii():
     reshaped_images = [x.reshape(1, h*w)[0, :] for x in selected_images]
     reshaped_images = np.array(reshaped_images)
     U, S = PCA(reshaped_images, 10)
-    plot_vector_as_image(U, h, w, 'Donald Rumsfeld - PCA')
+    plot_all_vectors(U, h, w, 'Donald Rumsfeld - PCA')
 
 def qa_iii():
-    pass
+    selected_images, h, w = get_pictures_by_name('Donald Rumsfeld')
+    reshaped_images = [x.reshape(1, h * w)[0, :] for x in selected_images]
+    reshaped_images = np.array(reshaped_images)
+
+    distances = []
+    k_list = [1, 5, 10, 30, 50, 100]
+    samples = random.sample(range(len(reshaped_images)), 5)
+    for k in k_list:
+        U, S = PCA(reshaped_images, k)
+        l2_sum = 0
+        for s in samples:
+            x = reshaped_images[s, :]
+            a = encode(U, x)
+            x_transformed = decode(U, a)
+            fig, (ax1, ax2) = plt.subplots(1, 2)
+            ax1.axis('off')
+            ax1.imshow(x.reshape((h, w)), cmap=plt.cm.gray)
+            ax1.set_title('original img{}'.format(s))
+            ax2.axis('off')
+            ax2.imshow(x_transformed.reshape((h, w)), cmap=plt.cm.gray)
+            ax2.set_title('transformed img{}'.format(s))
+            fig.suptitle('Original and transformed for k={}'.format(k))
+            fig.savefig(r'plots/qa_3_img{}'.format(s))
+            plt.close()
+            l2_sum += np.linalg.norm(x-x_transformed)
+        distances.append(l2_sum)
+
+    plt.plot(k_list, distances)
+    plt.xlabel('k')
+    plt.ylabel('L2 dist')
+    plt.title('Sum of L2 distances as function of k')
+    plt.savefig('qa_3_l2_distances.png')
+    plt.close()
+
+def q3_iv():
+    names = load_data()['target_names']
+    images = []
+    for n in names:
+        ims, h, w = get_pictures_by_name(n)
+        if len(ims[0]) >= 70:
+            images.append(ims)
+    k_list = [1, 5, 10, 30, 50, 100, 150, 300]
+
+
+
+
+
+
+
+def encode(U, x):
+    return np.matmul(U, np.transpose(x))
+
+def decode(U, a):
+    return np.matmul(np.transpose(U), a)
+
+
+
+def plot_all_vectors(images, h, w, title='img'):
+    """saves all vectors in images as individual pictures and also in subplots"""
+    for j in range(len(images)):
+        plt.imshow(images[j, :].reshape((h, w)), cmap=plt.cm.gray)
+        plt.title(r'plots/{}_v{}'.format(title, j))
+        #plt.show()
+        plt.savefig(r'plots/{}_v{}'.format(title, j))
+        plt.close()
+
+    fig, ax = plt.subplots(2, 5)
+    i = 0
+    for row in ax:
+        for col in row:
+            col.axis('off')
+            col.imshow(images[i, :].reshape((h, w)), cmap=plt.cm.gray)
+            i += 1
+    plt.savefig(r'plots/{} all'.format(title))
+
 
 if __name__ == "__main__":
-    qa_ii()
+    #qa_iii()
+    q3_iv()
     #a = load_data()
     #data = a['images'][:10]
     #data = [x.reshape(1, 1850)[0, :] for x in data]
