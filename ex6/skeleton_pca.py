@@ -1,18 +1,26 @@
 import matplotlib.pyplot as plt
 from sklearn.datasets import fetch_lfw_people
 import numpy as np
+plt.ioff()  # Turn interactive plotting off
 from numpy.linalg import svd
 
-def plot_vector_as_image(image, h, w, title='img'):
+def plot_vector_as_image(images, h, w, title='img'):
     """
     utility function to plot a vector as image.
     Args:
     image - vector of pixels
     h, w - dimesnions of original pi
     """
-    plt.imshow(image.reshape((h, w)), cmap=plt.cm.gray)
-    plt.title(title, size=12)
-    plt.show()
+    fig, ax = plt.subplots(2, 5)
+
+    i = 0
+    for row in ax:
+        for col in row:
+            col.axis('off')
+            col.imshow(images[i, :].reshape((h, w)), cmap=plt.cm.gray)
+            i += 1
+
+    plt.savefig(title)
 
 def get_pictures_by_name(name='Ariel Sharon'):
     """
@@ -62,9 +70,20 @@ def PCA(X, k):
     S = np.array([[val] for val in eigenvalues[:k]])
     return U, S
 
+def qa_ii():
+    selected_images, h, w = get_pictures_by_name('Donald Rumsfeld')
+    reshaped_images = [x.reshape(1, h*w)[0, :] for x in selected_images]
+    reshaped_images = np.array(reshaped_images)
+    U, S = PCA(reshaped_images, 10)
+    plot_vector_as_image(U, h, w, 'Donald Rumsfeld - PCA')
+
+def qa_iii():
+    pass
+
 if __name__ == "__main__":
-    a = load_data()
-    data = a['images'][:10]
-    data = [x.reshape(1, 1850)[0, :] for x in data]
-    data = np.array(data)
-    PCA(data, 5)
+    qa_ii()
+    #a = load_data()
+    #data = a['images'][:10]
+    #data = [x.reshape(1, 1850)[0, :] for x in data]
+    #data = np.array(data)
+    #PCA(data, 5)
