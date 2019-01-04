@@ -5,6 +5,8 @@ from sklearn import svm
 import numpy as np
 plt.ioff()  # Turn interactive plotting off
 import random
+import warnings
+warnings.filterwarnings("ignore")  # ignore Warnings: living on the edge
 
 
 
@@ -107,7 +109,7 @@ def qa_iii():
     plt.xlabel('k')
     plt.ylabel('L2 dist')
     plt.title('Sum of L2 distances as function of k')
-    plt.savefig('qa_3_l2_distances.png')
+    plt.savefig(r'plots/qa_3_l2_distances.png')
     plt.close()
 
 def q3_iv():
@@ -132,6 +134,7 @@ def q3_iv():
 
     parameters = {'kernel': ['rbf'], 'C': [10, 100, 1000, 10000], 'gamma': [1e-7, 1e-8, 1e-9, 1e-10]}
     k_list = [1, 5, 10, 30, 50, 100, 150, 300]
+    accuracy_list = []
     for k in k_list:
         U, S = PCA(X, k)
         encoded_list = np.array([encode(U, x) for x in X])
@@ -139,10 +142,16 @@ def q3_iv():
         svc = svm.SVC()
         clf = GridSearchCV(svc, parameters, scoring='accuracy',)
         clf.fit(X_train, y_train)
-        accuracy = sum(clf.predict(X_test) == y_test)/ len(X_test)
+        accuracy_list.append(sum(clf.predict(X_test) == y_test)/ len(X_test))
 
-
-        print('dudu')
+    max_acc = max(accuracy_list)
+    plt.title('Accuracy as function of k (max={})'.format(max_acc))
+    plt.plot(k_list, accuracy_list)
+    plt.grid()
+    plt.xlabel('k')
+    plt.ylabel('Accuracy')
+    plt.savefig(r'plots/qa_iv2.png')
+    plt.close()
 
 def encode(U, x):
     return np.matmul(U, np.transpose(x))
@@ -172,10 +181,6 @@ def plot_all_vectors(images, h, w, title='img'):
 
 
 if __name__ == "__main__":
-    #qa_ii()
+    qa_ii()
+    qa_iii()
     q3_iv()
-    #a = load_data()
-    #data = a['images'][:10]
-    #data = [x.reshape(1, 1850)[0, :] for x in data]
-    #data = np.array(data)
-    #PCA(data, 5)
