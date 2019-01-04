@@ -144,7 +144,7 @@ def q3_iv():
         clf.fit(X_train, y_train)
         accuracy_list.append(sum(clf.predict(X_test) == y_test)/ len(X_test))
 
-    max_acc = max(accuracy_list)
+    max_acc = max(accuracy_list).__round__(3)
     plt.title('Accuracy as function of k (max={})'.format(max_acc))
     plt.plot(k_list, accuracy_list)
     plt.grid()
@@ -181,6 +181,6 @@ def plot_all_vectors(images, h, w, title='img'):
 
 
 if __name__ == "__main__":
-    qa_ii()
-    qa_iii()
+    #qa_ii()
+    #qa_iii()
     q3_iv()
